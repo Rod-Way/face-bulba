@@ -1,8 +1,7 @@
 
 # FaceBulba
 
-  
-
+[![wakatime](https://wakatime.com/badge/user/018d96c3-132b-4a3e-9dd8-0f2c4e6a40d9/project/018e5702-9a32-4766-9d45-61c6353c38ec.svg)](https://wakatime.com/badge/user/018d96c3-132b-4a3e-9dd8-0f2c4e6a40d9/project/018e5702-9a32-4766-9d45-61c6353c38ec)
 
 Запросы отправляемые frontend сервером к backend серверу. В качестве наглядной демонстрации и для возможности самому протестировать приведены curl запросы
 ## Хендлеры
