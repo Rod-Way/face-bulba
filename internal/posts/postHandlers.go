@@ -2,6 +2,7 @@ package posts
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,6 +19,7 @@ func CreatePost(c *gin.Context) {
 
 	post.ID = primitive.NewObjectID()
 	post.AuthorUsername = c.GetString("username")
+	post.CreatedAt = time.Now()
 
 	if err := post.SavePost(); err != nil {
 		c.JSON(500, gin.H{
@@ -84,6 +86,42 @@ func DeletePost(c *gin.Context) {
 			"error": err.Error(),
 		})
 		return
+	}
+
+	objID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "invalid postID",
+		})
+	}
+
+	// Check author and user
+	author, err := GetField(objID, "username")
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "can not get post username",
+		})
+		return
+	}
+
+	auth, ok := author.(string)
+	if !ok || auth != c.GetString("username") {
+		c.JSON(400, gin.H{
+			"error": "invalid author",
+		})
+		return
+	}
+
+	if err := DeletePostByID(objID); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Can not delete",
+		})
+	}
+
+	if err := removePostFromUser(auth, objID); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Can not delete",
+		})
 	}
 
 	c.JSON(200, gin.H{
