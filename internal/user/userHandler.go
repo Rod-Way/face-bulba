@@ -6,6 +6,7 @@ import (
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
 	"github.com/lsgser/go-social/auth"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -37,6 +38,8 @@ func AddUser(c *gin.Context) {
 
 	// Creating a Header Form Instance
 	upper := cases.Title(language.English)
+
+	user.ID = primitive.NewObjectID()
 
 	user.Name = upper.String(strings.TrimSpace(strings.ToLower(user.Name)))
 	user.Surname = upper.String(strings.TrimSpace(strings.ToLower(user.Surname)))

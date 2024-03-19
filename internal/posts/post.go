@@ -25,11 +25,11 @@ type Post struct {
 }
 
 type Comment struct {
-	ID             string    `json:"-"`
-	PostID         string    `json:"post_id"`
-	AuthorUsername string    `json:"-" bson:"author"`
-	Text           string    `json:"text"`
-	CreatedAt      time.Time `json:"-"`
+	ID             primitive.ObjectID `json:"-"`
+	PostID         primitive.ObjectID `json:"post_id"`
+	AuthorUsername string             `json:"-" bson:"author"`
+	Text           string             `json:"text"`
+	CreatedAt      time.Time          `json:"-"`
 }
 
 func NewPost() *Post {

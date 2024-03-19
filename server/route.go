@@ -25,5 +25,13 @@ func Routes(route *gin.Engine) {
 			p.POST("update", post.UpdatePost)
 			p.POST("delete", post.DeletePost)
 		}
+		comm := api.Group("/comment")
+		comm.Use(mw.AuthMiddleware())
+		{
+			comm.POST("create", post.CreateComment)
+			comm.POST("update", post.UpdateComment)
+			comm.POST("delete", post.DeleteComment)
+		}
+
 	}
 }

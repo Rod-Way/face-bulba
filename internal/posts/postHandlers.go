@@ -123,21 +123,59 @@ func CreateComment(c *gin.Context) {
 		return
 	}
 
-	// if err := post.SavePost(); err != nil {
-	// 	c.JSON(500, gin.H{
-	// 		"error": err.Error(),
-	// 	})
-	// 	return
-	// }
+	comment.AuthorUsername = c.GetString("username")
+	comment.ID = primitive.NewObjectID()
+
+	if err := comment.SaveComment(); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message": "Post commented successfully",
 	})
 }
 
-func UpdateComment(c *gin.Context) {}
+func UpdateComment(c *gin.Context) {
+	var comment = NewComment()
+	if err := c.ShouldBindJSON(&comment); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
-func DeleteComment(c *gin.Context) {}
+	if err := comment.UpdateComment(); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Post commented successfully",
+	})
+}
+
+func DeleteComment(c *gin.Context) {
+	commentID := c.Param("commentID")
+	ID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalig postID"})
+		return
+	}
+	post, err := GetPostByIDDB(ID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"response": post,
+	})
+}
 
 // +--------------------+
 // |   POST + ALBUMS   |

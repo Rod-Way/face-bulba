@@ -9,21 +9,22 @@ import (
 	db "faceBulba/database"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type User struct {
-	ID              int64    `json:"-" bson:"_id"` // Unique ID in DB
-	Name            string   `json:"name" bson:"name"`
-	Surname         string   `json:"surname" bson:"surname"`
-	Username        string   `json:"username" bson:"username"`
-	Email           string   `json:"email" bson:"email"`
-	Posts           []string `json:"posts" bson:"posts"`     // All user post IDs
-	Albums          []string `json:"albums" bson:"albums"`   // All user albums IDs
-	Friends         []string `json:"friends" bson:"friends"` // All users friends
-	EmailVerifiedAt string   `json:"email_verified_at,omitempty" bson:"email_verifaed_at,omitempty"`
-	Password        string   `json:"password,omitempty" bson:"password"`
-	CreatedAt       string   `json:"created_at,omitempty" bson:"created_at"`
+	ID              primitive.ObjectID `json:"-" bson:"_id"`
+	Name            string             `json:"name" bson:"name"`
+	Surname         string             `json:"surname" bson:"surname"`
+	Username        string             `json:"username" bson:"username"`
+	Email           string             `json:"email" bson:"email"`
+	Posts           []string           `json:"-" bson:"posts"`   // All user post IDs
+	Albums          []string           `json:"-" bson:"albums"`  // All user albums IDs
+	Friends         []string           `json:"-" bson:"friends"` // All users friends
+	EmailVerifiedAt string             `json:"-" bson:"email_verifaed_at,omitempty"`
+	Password        string             `json:"password,omitempty" bson:"password"`
+	CreatedAt       string             `json:"-" bson:"created_at"`
 }
 
 // Structure for login
