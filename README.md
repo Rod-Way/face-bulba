@@ -16,7 +16,9 @@
 
 	- Пример curl запроса:
 
-          curl -X POST http://localhost:5000/api/register -H "Content-Type: application/json" -d '{"name": "Oleg", "surname": "Sazanovich", "username": "sazan4ik", "email": "sazan@mail.ru", "password": "password"}'
+          curl -X POST http://localhost:5000/api/register \
+          -H "Content-Type: application/json"\
+          -d '{"name": "Oleg", "surname": "Sazanovich", "username": "sazan4ik", "email": "sazan@mail.ru", "password": "password"}'
 
 
 - POST /api/login
@@ -26,11 +28,12 @@
 	- пример curl запроса:
 
 	      curl -X POST http://localhost:5000/api/login \
-              -H "Content-Type: application/json" -d '{"user":"sazan4ik","password":"password"}'
+              -H "Content-Type: application/json" \
+              -d '{"user":"sazan4ik","password":"password"}'
 
 	- Ответ:
 
-{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE3MTA5NDgxNTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InNhemFuNGlrIn0.2xB64gb7ImifgsnycURDVf9fI_g2NJ4jdzPIqt7ktNA"}
+'{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE3MTA5NDgxNTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InNhemFuNGlrIn0.2xB64gb7ImifgsnycURDVf9fI_g2NJ4jdzPIqt7ktNA"}'
   
 - GET /api/is-auth/:token
 
