@@ -72,10 +72,6 @@ func (u *User) SaveUser() error {
 	// Add the new user
 	u.Password = string(hashedPassword)
 	u.CreatedAt = time.Now().Format("2006-12-30 15:04:05")
-	u.EmailVerifiedAt = ""
-	u.Posts = nil
-	u.Friends = nil
-	u.Albums = nil
 
 	_, err = collection.InsertOne(ctx, u)
 	return err

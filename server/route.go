@@ -1,6 +1,7 @@
 package server
 
 import (
+	albums "faceBulba/internal/albums"
 	mw "faceBulba/internal/middlewares"
 	post "faceBulba/internal/posts"
 	user "faceBulba/internal/user"
@@ -25,12 +26,19 @@ func Routes(route *gin.Engine) {
 			p.POST("update/:id", post.UpdatePost)
 			p.POST("delete", post.DeletePost)
 		}
+
 		comm := api.Group("/comment")
 		comm.Use(mw.AuthMiddleware())
 		{
 			comm.POST("create", post.CreateComment)
-			comm.POST("update", post.UpdateComment)
+			comm.POST("update/:id", post.UpdateComment)
 			comm.POST("delete", post.DeleteComment)
+		}
+
+		album := api.Group("/albums")
+		album.Use(mw.AuthMiddleware())
+		{
+			album.POST("create", albums.CreateAlbum)
 		}
 
 	}

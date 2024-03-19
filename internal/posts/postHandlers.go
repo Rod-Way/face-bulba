@@ -180,6 +180,7 @@ func CreateComment(c *gin.Context) {
 
 	comment.AuthorUsername = c.GetString("username")
 	comment.ID = primitive.NewObjectID()
+	comment.CreatedAt = time.Now()
 
 	if err := comment.SaveComment(); err != nil {
 		c.JSON(500, gin.H{
@@ -194,15 +195,25 @@ func CreateComment(c *gin.Context) {
 }
 
 func UpdateComment(c *gin.Context) {
-	var comment = NewComment()
-	if err := c.ShouldBindJSON(&comment); err != nil {
+	commentID := c.Param("id")
+
+	var newText string
+	if err := c.ShouldBindJSON(&newText); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	if err := comment.UpdateComment(); err != nil {
+	ID, err := primitive.ObjectIDFromHex(commentID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "invalid commentID",
+		})
+		return
+	}
+
+	if err := UpdateCommentF(ID, newText); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
@@ -210,25 +221,52 @@ func UpdateComment(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"message": "Post commented successfully",
+		"message": "Comment updated successfully",
 	})
 }
 
 func DeleteComment(c *gin.Context) {
-	commentID := c.Param("commentID")
-	ID, err := primitive.ObjectIDFromHex(commentID)
-	if err != nil {
-		c.JSON(400, gin.H{"error": "invalig postID"})
+	var commentID string
+	if err := c.ShouldBindJSON(&commentID); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
-	post, err := GetPostByIDDB(ID)
+
+	objID, err := primitive.ObjectIDFromHex(commentID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{
+			"error": "invalid postID",
+		})
+	}
+
+	// Check author and user
+	author, err := GetCommentField(objID, "author")
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "can not get post username",
+		})
+		return
+	}
+
+	auth, ok := author.(string)
+	if !ok || auth != c.GetString("username") {
+		c.JSON(400, gin.H{
+			"error": "invalid author",
+		})
+		return
+	}
+
+	if err := DeleteCommentF(objID); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Can not delete",
+		})
 		return
 	}
 
 	c.JSON(200, gin.H{
-		"response": post,
+		"message": "Comment deleted successfully",
 	})
 }
 
