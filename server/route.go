@@ -22,7 +22,7 @@ func Routes(route *gin.Engine) {
 		p.Use(mw.AuthMiddleware())
 		{
 			p.POST("create", post.CreatePost)
-			p.POST("update", post.UpdatePost)
+			p.POST("update/:id", post.UpdatePost)
 			p.POST("delete", post.DeletePost)
 		}
 		comm := api.Group("/comment")

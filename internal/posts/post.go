@@ -2,6 +2,7 @@ package posts
 
 import (
 	"context"
+	"errors"
 	db "faceBulba/database"
 	u "faceBulba/internal/user"
 	"fmt"
@@ -9,11 +10,12 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Post struct {
-	ID             primitive.ObjectID `json:"-" bson:"_id"`
+	ID             primitive.ObjectID `json:"id" bson:"_id"`
 	AuthorUsername string             `json:"-" bson:"author"`
 	AlbumsIDs      []string           `json:"-" bson:"albums_ids"`
 	Text           string             `json:"text" bson:"text"`
@@ -70,47 +72,56 @@ func GetField(postID primitive.ObjectID, fieldName string) (interface{}, error) 
 	var post Post
 	err = col.FindOne(ctx, bson.M{"_id": postID}).Decode(&post)
 	if err != nil {
-		return nil, fmt.Errorf("failed to find post: %v", err)
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, fmt.Errorf("post not found with ID %s", postID.Hex())
+		}
+		return nil, fmt.Errorf("failed to decode post: %v", err)
 	}
 
+	var fieldValue interface{}
 	switch fieldName {
-	case "author":
-		return post.AuthorUsername, nil
+	case "username":
+		fieldValue = post.AuthorUsername
 	case "albums_ids":
-		return post.AlbumsIDs, nil
+		fieldValue = post.AlbumsIDs
 	case "text":
-		return post.Text, nil
+		fieldValue = post.Text
 	case "files_url":
-		return post.FilesURL, nil
+		fieldValue = post.FilesURL
 	case "tags":
-		return post.Tags, nil
+		fieldValue = post.Tags
 	case "comments":
-		return post.Comments, nil
+		fieldValue = post.Comments
 	case "is_updated":
-		return post.IsUpdated, nil
+		fieldValue = post.IsUpdated
 	case "createdAt":
-		return post.CreatedAt, nil
+		fieldValue = post.CreatedAt
 	default:
 		return nil, fmt.Errorf("can not get this field: %s", fieldName)
 	}
+
+	if fieldValue == nil {
+		return nil, fmt.Errorf("field %s does not exist in post with ID %s", fieldName, postID.Hex())
+	}
+
+	return fieldValue, nil
 }
 
-func (p *Post) UpdatePost(newPostData *Post) error {
+func UpdateField(postID primitive.ObjectID, field string, value interface{}) error {
 	client, col, ctx, cancel, err := db.GetDB("posts")
 	if err != nil {
-		return fmt.Errorf("failed to connect to MongoDB: %v", err)
+		return err
 	}
 	defer client.Disconnect(ctx)
 	defer cancel()
 
-	filter := bson.M{"_id": p.ID}
-	updateResult, err := col.UpdateOne(ctx, filter, bson.M{"$set": newPostData})
-	if err != nil {
-		return fmt.Errorf("failed to update post: %v", err)
-	}
+	filter := bson.M{"_id": postID}
 
-	if updateResult.ModifiedCount == 0 {
-		return fmt.Errorf("post not found")
+	update := bson.M{"$set": bson.M{field: value, "is_updated": true}}
+
+	_, err = col.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return err
 	}
 
 	return nil
@@ -258,4 +269,13 @@ func removePostFromUser(username string, postID primitive.ObjectID) error {
 	}
 
 	return nil
+}
+
+func isAllowedField(field string) bool {
+	allowedFields := map[string]bool{
+		"text":      true,
+		"files_url": true,
+		"tags":      true,
+	}
+	return allowedFields[field]
 }

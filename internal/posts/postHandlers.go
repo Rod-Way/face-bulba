@@ -32,32 +32,49 @@ func CreatePost(c *gin.Context) {
 }
 
 func UpdatePost(c *gin.Context) {
-	var post = NewPost()
-	if err := c.ShouldBindJSON(&post); err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
+	postID := c.Param("id")
+
+	var updateFields map[string]interface{}
+	if err := c.BindJSON(&updateFields); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	author, err := GetField(post.ID, "username")
-	if err != nil || author != c.GetString("username") {
-		c.JSON(400, gin.H{
-			"error": "invalig author",
-		})
+	ID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalid postID"})
 		return
 	}
 
-	if err := post.UpdatePost(post); err != nil {
+	// Check author and user
+	author, err := GetField(ID, "username")
+	if err != nil {
 		c.JSON(500, gin.H{
-			"error": err.Error(),
+			"error": "can not get post username",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "post updated successfully",
-	})
+	auth, ok := author.(string)
+	if !ok || auth != c.GetString("username") {
+		c.JSON(400, gin.H{
+			"error": "invalid author",
+		})
+		return
+	}
+
+	for field, value := range updateFields {
+		if !isAllowedField(field) {
+			c.JSON(400, gin.H{"error": "field not allowed"})
+			return
+		}
+		if err := UpdateField(ID, field, value); err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	c.JSON(200, gin.H{"message": "Post updated successfully"})
 }
 
 func DeletePost(c *gin.Context) {
