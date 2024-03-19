@@ -16,6 +16,7 @@
 
 	- Пример curl запроса:
 
+			```bash
 			curl -X POST http://localhost:5000/api/register \
 			-H "Content-Type: application/json" \
 			-d '{
@@ -25,6 +26,7 @@
 				"email": "sazan@mail.ru",
 				"password": "password"
 			}'
+			```
 
 
 - POST /api/login
