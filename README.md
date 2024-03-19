@@ -33,19 +33,20 @@
 
 	- Ответ:
 
-'{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE3MTA5NDgxNTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InNhemFuNGlrIn0.2xB64gb7ImifgsnycURDVf9fI_g2NJ4jdzPIqt7ktNA"}'
+	      '{"token":"TOKEN HERE"}'
   
 - GET /api/is-auth/:token
 
-		Проверяет зарегестрирован ли тот или иной пользователь
+	Проверяет зарегестрирован ли тот или иной пользователь
 
 	- Пример curl запроса:
 	
-		curl -X GET \
-		http://localhost:5000/api/is-auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE3MTA5NDgxNTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InNhemFuNGlrIn0.2xB64gb7ImifgsnycURDVf9fI_g2NJ4jdzPIqt7ktNA
+	      curl -X GET \
+	      http://localhost:5000/api/is-auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJnby1zb2NpYWwuand0Z28uaW8iLCJleHAiOjE3MTA5NDgxNTksImlzcyI6Imp3dGdvLmlvIiwidXNlciI6InNhemFuNGlrIn0.2xB64gb7ImifgsnycURDVf9fI_g2NJ4jdzPIqt7ktNA
 
 	- Ответ:
-		  {"isAuthenticated":true}
+   
+	      {"isAuthenticated":true}
 
 
 
