@@ -19,7 +19,7 @@ func CreatePost(c *gin.Context) {
 
 	post.ID = primitive.NewObjectID()
 	post.AuthorUsername = c.GetString("username")
-	post.CreatedAt = time.Now()
+	post.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
 	if err := post.SavePost(); err != nil {
 		c.JSON(500, gin.H{
@@ -180,7 +180,7 @@ func CreateComment(c *gin.Context) {
 
 	comment.AuthorUsername = c.GetString("username")
 	comment.ID = primitive.NewObjectID()
-	comment.CreatedAt = time.Now()
+	comment.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
 	if err := comment.SaveComment(); err != nil {
 		c.JSON(500, gin.H{

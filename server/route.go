@@ -2,6 +2,7 @@ package server
 
 import (
 	albums "faceBulba/internal/albums"
+	data "faceBulba/internal/data"
 	mw "faceBulba/internal/middlewares"
 	post "faceBulba/internal/posts"
 	user "faceBulba/internal/user"
@@ -18,6 +19,8 @@ func Routes(route *gin.Engine) {
 
 		api.GET("get-batch/:batchNumber", post.GetBatchOfPosts)
 		api.GET("get-by-id/:postID", post.GetPostByID)
+
+		api.POST("catch-data", data.SaveData)
 
 		p := api.Group("/posts")
 		p.Use(mw.AuthMiddleware())

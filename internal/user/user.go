@@ -71,7 +71,7 @@ func (u *User) SaveUser() error {
 
 	// Add the new user
 	u.Password = string(hashedPassword)
-	u.CreatedAt = time.Now().Format("2006-12-30 15:04:05")
+	u.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
 	_, err = collection.InsertOne(ctx, u)
 	return err
@@ -112,4 +112,24 @@ func (u *LogInUser) UserLogin() (string, error) {
 	}
 
 	return user.Username, nil
+}
+
+func UpdateField(userID primitive.ObjectID, field string, value interface{}) error {
+	client, col, ctx, cancel, err := db.GetDB("posts")
+	if err != nil {
+		return err
+	}
+	defer client.Disconnect(ctx)
+	defer cancel()
+
+	filter := bson.M{"_id": userID}
+
+	update := bson.M{"$set": bson.M{field: value}}
+
+	_, err = col.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

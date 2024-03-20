@@ -6,7 +6,6 @@ import (
 	db "faceBulba/database"
 	u "faceBulba/internal/user"
 	"fmt"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -23,7 +22,7 @@ type Post struct {
 	Tags           []string           `json:"tags" bson:"tags"`
 	Comments       []Comment          `json:"-" bson:"comments"`
 	IsUpdated      bool               `json:"-" bson:"is_updated"`
-	CreatedAt      time.Time          `json:"-" bson:"createdAt"`
+	CreatedAt      string             `json:"-" bson:"createdAt"`
 }
 
 type Comment struct {
@@ -31,7 +30,7 @@ type Comment struct {
 	PostID         primitive.ObjectID `json:"post_id"`
 	AuthorUsername string             `json:"-" bson:"author"`
 	Text           string             `json:"text"`
-	CreatedAt      time.Time          `json:"-"`
+	CreatedAt      string             `json:"-"`
 }
 
 func NewPost() *Post {
@@ -212,6 +211,7 @@ func addPostToUser(username string, postID primitive.ObjectID) error {
 	defer cancel()
 	defer client.Disconnect(ctx)
 
+	fmt.Println(username)
 	filter := bson.M{"username": username}
 	var user u.User
 	err = col.FindOne(ctx, filter).Decode(&user)
