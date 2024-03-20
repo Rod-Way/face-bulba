@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import './style.css';
+
 const Uploader = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
 
@@ -36,9 +38,15 @@ const Uploader = () => {
 	};
 
 	return (
-		<div>
-			<input type='file' onChange={handleFileChange} />
-			<button onClick={handleUpload}>Upload</button>
+		<div className='uploader-card'>
+			<input
+				className='fileInput'
+				type='file'
+				onChange={handleFileChange}
+			/>
+			<button className='fileButton' onClick={handleUpload}>
+				Upload
+			</button>
 		</div>
 	);
 };

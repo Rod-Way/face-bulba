@@ -1,0 +1,183 @@
+@import './reset.css';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap');
+
+:root {
+	--black-d: #000000;
+	--black-n: #333333;
+	--black-c: #171718;
+	--black-l: #666666;
+
+	--white-d: #d3d3d3;
+	--white-n: #f5f5f5;
+	--white-l: #ffffff;
+
+	--turquoise: #00ced1;
+	--turquoise-dark: #008b8b;
+
+	--orange: #ffa500;
+	--orange-dark: #ff8c00;
+
+	/* Nav */
+	--nav-bg: var(--black-n);
+	--nav-border: var(--black-d);
+	--nav-text: var(--white-n);
+
+	/* Header */
+	--header-bg: var(--black-c);
+	--header-text: var(--white-l);
+
+	/* Footer */
+	--footer-bg: var(--black-d);
+	--footer-text: var(--white-d);
+
+	/* Light mode */
+	--page-bg: var(--white-n);
+	--page-bg-alt: var(--black-d);
+	--text-color: var(--black-n);
+	--text-color-alt: var(--white-n);
+	--accent: var(--turquoise);
+	--accent-2: var(--orange);
+	--title-1: var(--accent);
+	--title-2: var(--accent-2);
+
+	--box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.25);
+}
+
+.dark {
+	/* Dark mode */
+	--page-bg: var(--black-l);
+	--page-bg-alt: var(--white-l);
+	--text-color: var(--white-n);
+	--text-color-alt: var(--black-n);
+
+	--accent: var(--turquoise-dark);
+	--accent-2: var(--orange-dark);
+
+	--box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.8);
+}
+
+html,
+body {
+	min-height: 100vh;
+
+	font-family: 'DM Sans', sans-serif;
+	letter-spacing: -0.5px;
+
+	/* Light mode */
+	background-color: var(--page-bg);
+	color: var(--text-color);
+}
+
+#root {
+	min-height: 100vh;
+}
+
+.App {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* General */
+
+.container {
+	margin: 0 auto;
+	padding: 0 15px;
+	max-width: 1200px;
+}
+
+.none {
+	display: none !important;
+}
+
+.section {
+	padding: 70px 0;
+}
+
+.title-1 {
+	margin-bottom: 60px;
+
+	font-size: 60px;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--title-1);
+	text-align: center;
+}
+
+.title-2 {
+	margin-bottom: 20px;
+
+	font-size: 40px;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+/* Register page */
+
+#register {
+	width: 550px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: var(--page-bg);
+	color: var(--text-color);
+	border-radius: 10px;
+	box-shadow: var(--box-shadow);
+	align-items: center;
+	transition: box-shadow 0.3s ease;
+}
+
+#register:hover {
+	box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.5);
+}
+
+form#register-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#register input {
+	margin-bottom: 15px;
+	padding: 10px;
+	border: 1px solid var(--nav-border);
+	border-radius: 5px;
+	background-color: transparent;
+	color: var(--text-color);
+	transition: border-color 0.3s ease;
+	width: 100%;
+}
+
+#register input:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+
+button#register-btn {
+	background-color: var(--turquoise);
+	color: var(--text-color);
+	max-width: 200px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button#register-btn:hover {
+	color: var(--text-color-alt);
+	background-color: var(--turquoise-dark);
+}
+
+button#register-btn strong {
+	font-weight: bold;
+}
+
+button#sign-up {
+	color: var(--orange-dark);
+	padding: none;
+	border: none;
+	background: none;
+	cursor: pointer;
+	margin-top: 10px;
+	align-self: center;
+}

@@ -14,8 +14,7 @@ func SaveData(c *gin.Context) {
 		return
 	}
 
-	err = c.SaveUploadedFile(file, "uploads/"+file.Filename)
-	if err != nil {
+	if err = c.SaveUploadedFile(file, "uploads/"+file.Filename); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file"})
 		return
 	}
