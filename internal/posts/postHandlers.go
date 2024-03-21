@@ -148,7 +148,7 @@ func GetBatchOfPosts(c *gin.Context) {
 }
 
 func GetPostByID(c *gin.Context) {
-	postID := c.Param("postID")
+	postID := c.Param("id")
 	ID, err := primitive.ObjectIDFromHex(postID)
 	if err != nil {
 		c.JSON(400, gin.H{"error": "invalig postID"})

@@ -1,6 +1,7 @@
 package user
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/badoux/checkmail"
@@ -132,5 +133,41 @@ func CheckUser(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"isAuthenticated": true,
+	})
+}
+
+func GetBachOfUSers(c *gin.Context) {
+	batchNumber, err := strconv.Atoi(c.Param("batchNumber"))
+	if err != nil || batchNumber < 1 {
+		c.JSON(400, gin.H{"error": "invalid batch number"})
+		return
+	}
+
+	posts, err := GetUsersBatch(batchNumber)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"response": posts,
+	})
+}
+
+func GetUserByID(c *gin.Context) {
+	userID := c.Param("id")
+	ID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalig postID"})
+		return
+	}
+	post, err := GetUserByIDDB(ID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"response": post,
 	})
 }

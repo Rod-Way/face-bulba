@@ -17,8 +17,17 @@ func Routes(route *gin.Engine) {
 		api.POST("login", user.LoginUser)
 		api.GET("is-auth/:token", user.CheckUser)
 
-		api.GET("get-batch/:batchNumber", post.GetBatchOfPosts)
-		api.GET("get-by-id/:postID", post.GetPostByID)
+		gd := api.Group("/get")
+		{
+			gd.GET("users-batch/:batchNumber", user.GetBachOfUSers)
+			gd.GET("user-by-id/:id", user.GetUserByID)
+
+			gd.GET("posts-batch/:batchNumber", post.GetBatchOfPosts)
+			gd.GET("post-by-id/:id", post.GetPostByID)
+
+			gd.GET("album-by-id/:id", albums.GetAlbumByID)
+
+		}
 
 		api.POST("catch-data", data.SaveData)
 
@@ -42,7 +51,8 @@ func Routes(route *gin.Engine) {
 		album.Use(mw.AuthMiddleware())
 		{
 			album.POST("create", albums.CreateAlbum)
+			album.POST("update/:id", albums.UpdateAlbum)
+			album.POST("delete", albums.DeleteAlbum)
 		}
-
 	}
 }

@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type User struct {
@@ -132,4 +134,47 @@ func UpdateField(userID primitive.ObjectID, field string, value interface{}) err
 	}
 
 	return nil
+}
+
+func GetUserByIDDB(userID primitive.ObjectID) (*User, error) {
+	client, col, ctx, cancel, err := db.GetDB("users")
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to MongoDB: %v", err)
+	}
+	defer client.Disconnect(ctx)
+	defer cancel()
+
+	var user User
+	err = col.FindOne(ctx, bson.M{"_id": userID}).Decode(&user)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find post: %v", err)
+	}
+
+	return &user, nil
+}
+
+// Getting batch for "Endless" feed
+func GetUsersBatch(batchNumber int) ([]User, error) {
+	client, col, ctx, cancel, err := db.GetDB("users")
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to MongoDB: %v", err)
+	}
+	defer cancel()
+	defer client.Disconnect(ctx)
+
+	skip := (batchNumber - 1) * 10
+
+	cursor, err := col.Find(ctx, bson.M{}, options.Find().SetSkip(int64(skip)).SetLimit(25))
+	if err != nil {
+		return nil, fmt.Errorf("failed to query MongoDB collection: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	var users []User
+	err = cursor.All(ctx, &users)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode posts: %v", err)
+	}
+
+	return users, nil
 }
