@@ -19,6 +19,19 @@
 .header__wrapper {
 	padding: 0 15px;
 	max-width: 660px;
+
+	opacity: 0; /* Начальное значение прозрачности */
+	animation: fadeIn 2s forwards; /* Применяем анимацию появления */
+}
+
+/* Определяем анимацию появления */
+@keyframes fadeIn {
+	from {
+		opacity: 0; /* Начальное значение прозрачности */
+	}
+	to {
+		opacity: 1; /* Конечное значение прозрачности */
+	}
 }
 
 .header__title {

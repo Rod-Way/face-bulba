@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { NavLink } from 'react-router-dom';
+
 const Login = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -11,7 +13,7 @@ const Login = () => {
 		console.log('Password:', password);
 	};
 	return (
-		<div id='login'>
+		<div className='card'>
 			<form onSubmit={handleSubmit}>
 				<input
 					type='text'
@@ -26,10 +28,10 @@ const Login = () => {
 					onChange={e => setPassword(e.target.value)}
 				/>
 				<button type='submit'>Отправить</button>
+				<NavLink className='other' to='/register'>
+					Нет аккаунта? <strong>Зарегистрироваться</strong>
+				</NavLink>
 			</form>
-			<button>
-				Нет аккаунта? <strong>Зарегистрироваться</strong>
-			</button>
 		</div>
 	);
 };

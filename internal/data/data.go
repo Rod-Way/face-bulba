@@ -1,5 +1,9 @@
 package data
 
+func c() {
+
+}
+
 // func CreateWEBP(file *multipart.FileHeader) ([]byte, error) {
 // 	// Opening
 // 	src, err := file.Open()
@@ -29,10 +33,22 @@ package data
 
 func isAllowedExt(ext string) bool {
 	allowedExt := map[string]bool{
+		".dng":  true,
+		".raw":  true,
 		".png":  true,
 		".jpeg": true,
 		".jpg":  true,
-		".webp": true,
+		".gif":  true,
+		".mp4":  true,
+		".mov":  true,
 	}
 	return allowedExt[ext]
+}
+
+func isAllowedFileSize(size int64) bool {
+	if size > 50*1024*1024 { // 50 MB
+		return false
+	}
+
+	return true
 }

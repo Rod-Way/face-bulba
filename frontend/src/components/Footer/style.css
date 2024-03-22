@@ -3,6 +3,7 @@
 	padding: 60px 0 50px;
 	background-color: var(--footer-bg);
 	color: var(--footer-text);
+	position: relative;
 }
 
 .footer__wrapper {

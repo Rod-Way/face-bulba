@@ -32,7 +32,12 @@
 
 	/* Light mode */
 	--page-bg: var(--white-n);
-	--page-bg-alt: var(--black-d);
+	--page-bg-alt: var(--black-n);
+
+	--card-bg: var(--white-l);
+	--card-bg-alt: var(--black-l);
+	--comm-bg: var(--white-l);
+
 	--text-color: var(--black-n);
 	--text-color-alt: var(--white-n);
 	--accent: var(--turquoise);
@@ -45,10 +50,16 @@
 
 .dark {
 	/* Dark mode */
-	--page-bg: var(--black-l);
-	--page-bg-alt: var(--white-l);
+	--page-bg: var(--black-c);
+	--page-bg-alt: var(--white-n);
+
+	--card-bg: var(--black-n);
+	--card-bg-alt: var(--white-n);
+	--comm-bg: var(--black-l);
+
 	--text-color: var(--white-n);
 	--text-color-alt: var(--black-n);
+	--nav-bg: var(--white-n);
 
 	--accent: var(--turquoise-dark);
 	--accent-2: var(--orange-dark);
@@ -70,6 +81,7 @@ body {
 
 #root {
 	min-height: 100vh;
+	margin-left: 15%;
 }
 
 .App {
@@ -84,6 +96,10 @@ body {
 	margin: 0 auto;
 	padding: 0 15px;
 	max-width: 1200px;
+	align-items: center;
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 25px;
 }
 
 .none {
@@ -112,13 +128,40 @@ body {
 	line-height: 1.3;
 }
 
-/* Register page */
+/* Общие стили для скроллбара в Chrome */
+::-webkit-scrollbar {
+	width: 8px; /* Ширина скроллбара */
+}
 
-#register {
-	width: 550px;
-	margin: 0 auto;
+/* Трек скроллбара */
+::-webkit-scrollbar-track {
+	background: var(--black-c); /* Прозрачный фон трека */
+}
+
+/* Блок скроллбара (индикатор) */
+::-webkit-scrollbar-thumb {
+	background: var(--white-d); /* Цвет блока скроллбара */
+	border-radius: 4px; /* Скругление углов */
+}
+
+/* При наведении на блок скроллбара */
+::-webkit-scrollbar-thumb:hover {
+	background: var(
+		--orange-dark
+	); /* Измененный цвет блока скроллбара при наведении */
+}
+
+/* CARDS */
+
+.card {
+	position: relative;
+	top: 15%;
+	max-width: 550px;
+	margin: auto;
+	margin-top: 5%;
+	margin-bottom: 5%;
 	padding: 20px;
-	background-color: var(--page-bg);
+	background-color: var(--card-bg);
 	color: var(--text-color);
 	border-radius: 10px;
 	box-shadow: var(--box-shadow);
@@ -126,18 +169,22 @@ body {
 	transition: box-shadow 0.3s ease;
 }
 
-#register:hover {
+.card:hover {
 	box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.5);
 }
 
-form#register-form {
+.comment {
+	background-color: var(--comm-bg);
+}
+
+.card form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#register input {
-	margin-bottom: 15px;
+.card input {
+	margin: 15px;
 	padding: 10px;
 	border: 1px solid var(--nav-border);
 	border-radius: 5px;
@@ -145,14 +192,17 @@ form#register-form {
 	color: var(--text-color);
 	transition: border-color 0.3s ease;
 	width: 100%;
+	transition: box-shadow 0.3s ease;
 }
 
-#register input:focus {
+.card input:focus {
 	outline: none;
 	border-color: var(--accent);
+	box-shadow: var(--box-shadow);
 }
 
-button#register-btn {
+.card button,
+.card NavLink {
 	background-color: var(--turquoise);
 	color: var(--text-color);
 	max-width: 200px;
@@ -161,18 +211,29 @@ button#register-btn {
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.2s ease, color 0.2s ease;
+
+	transition: box-shadow 0.3s ease;
 }
 
-button#register-btn:hover {
+.card button:hover,
+.card NavLink:hover {
 	color: var(--text-color-alt);
 	background-color: var(--turquoise-dark);
+	box-shadow: var(--box-shadow);
 }
 
-button#register-btn strong {
+.card button:active,
+.card NavLink:active {
+	box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.5);
+}
+
+.card button strong,
+.card NavLink strong {
 	font-weight: bold;
 }
 
-button#sign-up {
+.card button.other,
+.card NavLink.other {
 	color: var(--orange-dark);
 	padding: none;
 	border: none;
@@ -180,4 +241,38 @@ button#sign-up {
 	cursor: pointer;
 	margin-top: 10px;
 	align-self: center;
+}
+
+.author {
+	font-weight: bold;
+}
+
+.text {
+	margin-top: 5px;
+}
+
+.files {
+	margin-top: 5px;
+}
+
+.tags {
+	margin-top: 5px;
+}
+
+.card-button {
+	margin-top: 20px;
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.card-button:hover {
+	background-color: #0056b3;
+}
+
+.card-button:active {
+	background-color: #004080;
 }

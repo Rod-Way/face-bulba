@@ -1,0 +1,38 @@
+div#navbar {
+	position: fixed;
+	left: 0;
+	width: 15%;
+	height: 100%;
+	background-color: var(--nav-bg);
+	color: var(--text-color-alt);
+	padding: 20px;
+	box-sizing: border-box;
+	overflow-y: auto;
+}
+
+#navbar h1 {
+	margin-bottom: 10px; /* Отступ снизу для заголовка */
+}
+
+#navbar p {
+	margin-bottom: 20px;
+}
+
+#navbar NavLink {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	background-color: var(--turquoise);
+	color: var(--text-color);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: box-shadow 0.3s ease;
+	transition: color 0.3s ease;
+}
+
+#navbar NavLink:hover {
+	background-color: var(--turquoise-dark);
+	color: var(--text-color-alt);
+	box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.5);
+}

@@ -217,7 +217,7 @@ func DeleteAlbumFromUser(albumID primitive.ObjectID, username string) error {
 	albumIDString := albumID.Hex()
 
 	index := -1
-	for i, id := range user.Posts {
+	for i, id := range user.Albums {
 		if id == albumIDString {
 			index = i
 			break

@@ -12,6 +12,7 @@ import (
 
 func Routes(route *gin.Engine) {
 	api := route.Group("/api")
+	api.Use(mw.CorsMiddleware())
 	{
 		api.POST("register", user.AddUser)
 		api.POST("login", user.LoginUser)
@@ -27,6 +28,7 @@ func Routes(route *gin.Engine) {
 
 			gd.GET("album-by-id/:id", albums.GetAlbumByID)
 
+			gd.GET("get/:file", data.GetData)
 		}
 
 		p := api.Group("/post")
@@ -57,6 +59,7 @@ func Routes(route *gin.Engine) {
 		d.Use(mw.AuthMiddleware())
 		{
 			d.POST("catch", data.SaveData)
+			d.POST("delete/:file", data.DeleteData)
 		}
 	}
 }

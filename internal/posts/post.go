@@ -15,22 +15,22 @@ import (
 
 type Post struct {
 	ID             primitive.ObjectID `json:"id" bson:"_id"`
-	AuthorUsername string             `json:"-" bson:"author"`
-	AlbumsIDs      []string           `json:"-" bson:"albums_ids"`
+	AuthorUsername string             `json:"author" bson:"author"`
+	AlbumsIDs      []string           `json:"albums_ids" bson:"albums_ids"`
 	Text           string             `json:"text" bson:"text"`
 	FilesURL       []string           `json:"files_url" bson:"files_url"`
 	Tags           []string           `json:"tags" bson:"tags"`
-	Comments       []Comment          `json:"-" bson:"comments"`
-	IsUpdated      bool               `json:"-" bson:"is_updated"`
-	CreatedAt      string             `json:"-" bson:"createdAt"`
+	Comments       []Comment          `json:"comments" bson:"comments"`
+	IsUpdated      bool               `json:"is_updated" bson:"is_updated"`
+	CreatedAt      string             `json:"createdAt" bson:"createdAt"`
 }
 
 type Comment struct {
-	ID             primitive.ObjectID `json:"-"`
+	ID             primitive.ObjectID `json:"id"`
 	PostID         primitive.ObjectID `json:"post_id"`
-	AuthorUsername string             `json:"-" bson:"author"`
+	AuthorUsername string             `json:"author" bson:"author"`
 	Text           string             `json:"text"`
-	CreatedAt      string             `json:"-"`
+	CreatedAt      string             `json:"createdAt"`
 }
 
 func NewPost() *Post {

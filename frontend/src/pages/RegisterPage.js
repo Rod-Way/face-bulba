@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Register = () => {
 	const [formData, setFormData] = useState([
@@ -24,8 +25,8 @@ const Register = () => {
 	};
 
 	return (
-		<div id='register'>
-			<form id='register-form' onSubmit={handleSubmit}>
+		<div className='card'>
+			<form onSubmit={handleSubmit}>
 				{formData.map((field, index) => (
 					<input
 						key={index}
@@ -35,12 +36,10 @@ const Register = () => {
 						onChange={e => handleChange(index, e.target.value)}
 					/>
 				))}
-				<button id='register-btn' type='submit'>
-					Отправить
-				</button>
-				<button id='sign-up'>
+				<button type='submit'>Отправить</button>
+				<NavLink className='other' to='/login'>
 					Уже есть аккаунт? <strong>Войти</strong>
-				</button>
+				</NavLink>
 			</form>
 		</div>
 	);
