@@ -191,14 +191,13 @@ func DeletePostByID(postID primitive.ObjectID) error {
 	if err != nil {
 		return fmt.Errorf("failed to find username: %v", err)
 	}
+
 	un, ok := username.(string)
 	if !ok {
 		return fmt.Errorf("invalid username: %v", err)
 	}
-	err = removePostFromUser(un, postID)
-	if err != nil {
-		return fmt.Errorf("failed to remove post from user: %v", err)
-	}
+
+	removePostFromUser(un, postID)
 
 	return nil
 }

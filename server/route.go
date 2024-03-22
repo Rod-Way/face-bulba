@@ -29,9 +29,7 @@ func Routes(route *gin.Engine) {
 
 		}
 
-		api.POST("catch-data", data.SaveData)
-
-		p := api.Group("/posts")
+		p := api.Group("/post")
 		p.Use(mw.AuthMiddleware())
 		{
 			p.POST("create", post.CreatePost)
@@ -47,12 +45,18 @@ func Routes(route *gin.Engine) {
 			comm.POST("delete", post.DeleteComment)
 		}
 
-		album := api.Group("/albums")
+		album := api.Group("/album")
 		album.Use(mw.AuthMiddleware())
 		{
 			album.POST("create", albums.CreateAlbum)
 			album.POST("update/:id", albums.UpdateAlbum)
 			album.POST("delete", albums.DeleteAlbum)
+		}
+
+		d := api.Group("/data")
+		d.Use(mw.AuthMiddleware())
+		{
+			d.POST("catch", data.SaveData)
 		}
 	}
 }

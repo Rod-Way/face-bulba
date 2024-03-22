@@ -1,6 +1,7 @@
 package posts
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -253,7 +254,7 @@ func DeleteComment(c *gin.Context) {
 	auth, ok := author.(string)
 	if !ok || auth != c.GetString("username") {
 		c.JSON(400, gin.H{
-			"error": "invalid author",
+			"error": "invalid author. " + fmt.Sprintf("Need: %s You: %s", auth, c.GetString("username")),
 		})
 		return
 	}

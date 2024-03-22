@@ -64,36 +64,37 @@ func GetCommentField(commentID primitive.ObjectID, fieldName string) (interface{
 	defer client.Disconnect(ctx)
 	defer cancel()
 
-	var comm Comment
-	err = collection.FindOne(ctx, bson.M{"comments.id": commentID}).Decode(&comm)
+	var post struct {
+		Comments []Comment `bson:"comments"`
+	}
+	err = collection.FindOne(ctx, bson.M{"comments.id": commentID}).Decode(&post)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, fmt.Errorf("post not found with ID %s", commentID.Hex())
+			return nil, fmt.Errorf("comment not found with ID %s", commentID.Hex())
 		}
 		return nil, fmt.Errorf("failed to decode post: %v", err)
 	}
 
-	var fieldValue interface{}
-	switch fieldName {
-	case "id":
-		fieldValue = comm.ID
-	case "post_id":
-		fieldValue = comm.PostID
-	case "author":
-		fieldValue = comm.AuthorUsername
-	case "text":
-		fieldValue = comm.Text
-	case "CreatedAt":
-		fieldValue = comm.CreatedAt
-	default:
-		return nil, fmt.Errorf("can not get this field: %s", fieldName)
+	for _, comment := range post.Comments {
+		if comment.ID == commentID {
+			switch fieldName {
+			case "id":
+				return comment.ID, nil
+			case "post_id":
+				return comment.PostID, nil
+			case "author":
+				return comment.AuthorUsername, nil
+			case "text":
+				return comment.Text, nil
+			case "CreatedAt":
+				return comment.CreatedAt, nil
+			default:
+				return nil, fmt.Errorf("can not get this field: %s", fieldName)
+			}
+		}
 	}
 
-	// if fieldValue == nil {
-	// 	return nil, fmt.Errorf("can not get this field: %s", fieldName)
-	// }
-
-	return fieldValue, nil
+	return nil, fmt.Errorf("comment not found with ID %s", commentID.Hex())
 }
 
 func DeleteCommentF(commentID primitive.ObjectID) error {

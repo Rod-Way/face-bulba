@@ -1,6 +1,7 @@
 package albums
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -8,19 +9,26 @@ import (
 )
 
 func CreateAlbum(c *gin.Context) {
-	var comment = NewAlbum()
-	if err := c.ShouldBindJSON(&comment); err != nil {
+	var album = NewAlbum()
+	if err := c.ShouldBindJSON(&album); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	comment.Users = append(comment.Users, c.GetString("username"))
-	comment.ID = primitive.NewObjectID()
-	comment.CreatedAt = time.Now()
+	album.Users = append(album.Users, c.GetString("username"))
+	album.ID = primitive.NewObjectID()
+	album.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
-	if err := comment.SaveAlbum(); err != nil {
+	if err := album.SaveAlbum(); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := AddAlbumToUser(album.ID, c.GetString("username")); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
@@ -43,23 +51,15 @@ func UpdateAlbum(c *gin.Context) {
 
 	ID, err := primitive.ObjectIDFromHex(albumID)
 	if err != nil {
-		c.JSON(400, gin.H{"error": "invalid postID"})
+		c.JSON(400, gin.H{"error": "invalid albumID"})
 		return
 	}
 
 	// Check author and user
-	author, err := GetField(ID, "username")
-	if err != nil {
+	if albumUS, err := FindUser(ID, c.GetString("username")); err != nil {
+		fmt.Println(c.GetString("username"), albumUS)
 		c.JSON(500, gin.H{
-			"error": "can not get post username",
-		})
-		return
-	}
-
-	auth, ok := author.(string)
-	if !ok || auth != c.GetString("username") {
-		c.JSON(400, gin.H{
-			"error": "invalid author",
+			"error": "can not get album username",
 		})
 		return
 	}
@@ -79,34 +79,26 @@ func UpdateAlbum(c *gin.Context) {
 }
 
 func DeleteAlbum(c *gin.Context) {
-	var postID string
-	if err := c.ShouldBindJSON(&postID); err != nil {
+	var albumID string
+	if err := c.ShouldBindJSON(&albumID); err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	objID, err := primitive.ObjectIDFromHex(postID)
+	objID, err := primitive.ObjectIDFromHex(albumID)
 	if err != nil {
 		c.JSON(500, gin.H{
-			"error": "invalid postID",
+			"error": "invalid albumID",
 		})
 	}
 
 	// Check author and user
-	author, err := GetField(objID, "username")
-	if err != nil {
+	if albumUS, err := FindUser(objID, c.GetString("username")); err != nil {
+		fmt.Println(c.GetString("username"), albumUS)
 		c.JSON(500, gin.H{
-			"error": "can not get album author username",
-		})
-		return
-	}
-
-	auth, ok := author.(string)
-	if !ok || auth != c.GetString("username") {
-		c.JSON(400, gin.H{
-			"error": "invalid author",
+			"error": "can not get album username",
 		})
 		return
 	}
@@ -115,6 +107,13 @@ func DeleteAlbum(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"error": "Can not delete",
 		})
+	}
+
+	if err := DeleteAlbumFromUser(objID, c.GetString("username")); err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	c.JSON(200, gin.H{

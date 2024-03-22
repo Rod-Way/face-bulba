@@ -1,0 +1,8 @@
+ВНИМАНИЕ:
+    Перед попыткой войти в аккаунт необходимо открыть PowerShell и ввести:
+        curl -X POST http://localhost:5000/api/register -H ""
+
+Логин:
+    OlegSey
+Пароль:
+    UltraPassword123

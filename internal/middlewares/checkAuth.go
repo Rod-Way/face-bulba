@@ -17,7 +17,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		username, err := auth.CheckJWT(token)
-		if err != nil && username != "" {
+		if err != nil || username == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
 			c.Abort()
 			return
