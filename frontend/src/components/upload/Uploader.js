@@ -20,7 +20,7 @@ const Uploader = () => {
 		formData.append('file', selectedFile);
 
 		axios
-			.post('http://localhost:5000/api/catch-data', formData, {
+			.post('http://192.168.137.234:5000/api/catch-data', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},

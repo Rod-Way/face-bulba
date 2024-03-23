@@ -13,7 +13,7 @@ const Main = () => {
 
 	const fetchMoreData = () => {
 		setLoading(true);
-		fetch(`http://localhost:5000/api/get/posts-batch/${batchNum}`)
+		fetch(`http://192.168.137.234:5000/api/get/posts-batch/${batchNum}`)
 			.then(response => response.json())
 			.then(data => {
 				const posts = data.response || [];
