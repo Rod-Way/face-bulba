@@ -1,6 +1,14 @@
 ВНИМАНИЕ:
     Перед попыткой войти в аккаунт необходимо открыть Git bash и ввести:
-        curl -X POST http://localhost:5000/api/register -H ""
+        curl -X POST http://localhost:5000/api/register \
+            -H "Content-Type: application/json" \
+            -d '{
+                "name": "OlegSey",
+                "surname": "Sirkov",
+                "username": "OlegSey",
+                "email": "notworking@mail.now",
+                "password": "UltraPassword123"
+            }'
 
 Логин:
     OlegSey
