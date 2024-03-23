@@ -8,9 +8,20 @@ const Login = () => {
 
 	const handleSubmit = event => {
 		event.preventDefault();
-		// TODO: SEND DATA TO BACKEND
-		console.log('Username:', username);
-		console.log('Password:', password);
+		fetch(`http://localhost:5000/api/login`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ваш_токен_авторизации', // Замените ваш_токен_авторизации на ваш реальный токен
+			},
+		})
+			.then(response => response.json())
+			.then(data => {
+				return;
+			})
+			.catch(error => {
+				console.error('Error fetching data:', error);
+			});
 	};
 	return (
 		<div className='card'>
