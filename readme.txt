@@ -19,6 +19,8 @@
         ):
             https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.7-signed.msi
 
+        В MongoDB установить соединение с mongodb://localhost:27017 (туториал по MongoDB https://youtu.be/pmjHPOPwX2A?si=yiNuT8pHedDaxWXf)
+
     - Запустить backend:
 
         - Открыть терминал (далее команды будут описываться для PowerShell)
