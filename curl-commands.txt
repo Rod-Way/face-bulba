@@ -1,0 +1,109 @@
+curl -X POST http://localhost:5000/api/register \
+	-H "Content-Type: application/json" \
+	-d '{
+		"name": "admin",
+		"surname": "admin",
+		"username": "admin",
+		"email": "admin@m.com",
+		"password": "admin"
+	}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/login \
+	-H "Content-Type: application/json" \
+	-d '{
+		"user": "admin",
+		"password":"admin"
+	}'
+
+------------------------------------------------------------------
+
+curl -X GET http://localhost:5000/api/is-auth/TOKEN
+
+==================================================================
+
+	P O S T S
+
+==================================================================
+
+curl -X POST http://localhost:5000/api/post/create \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '{
+		"text": "Lorem ipsum ador amet",
+		"tags": ["test", "admin"]
+	}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/post/update/POSTID \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '{
+		"text": "Lorem ipsum ador amet. LOREM IPSUM.",
+		"tags": ["test", "admin"]
+	}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/post/delete \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '"POSTID"'
+
+==================================================================
+
+	C O M M E N T S
+
+==================================================================
+
+curl -X POST http://localhost:5000/api/comment/create \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '{
+		"post_id": "POSTID",
+		"text": "Lorem ipsum ador amet"
+	}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/comment/update/COMMENTID \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '"Lorem ipsum ador amet. LOREM IPSUM."'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/comment/delete \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '"COMMENTID"'
+
+==================================================================
+
+	A L B U M S
+
+==================================================================
+
+curl -X POST http://localhost:5000/api/album/create \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '{
+		"name": "BEST TEAM",
+		"tags": ["team", "work"]
+	}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/album/update/ALBUMID \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '{"name":"Obed", "tags":["Adam"]}'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/album/delete \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d '"ALBUMID"'

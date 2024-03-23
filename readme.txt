@@ -1,23 +1,36 @@
 Целевая система:
     Windows 10 22H2
 
-Процесс настройки среды выполнения:
+Процесс настройки среды выполнения и запуск:
 
     - Установить последнюю версию браузера Chrome
 
+    - Установить проект
+
+    - Установить Node.js и npm по ссылке (
+            Если будут сложности с установкой - откройте https://nodejs.org/en/learn/getting-started/how-to-install-nodejs
+        ):
+        https://nodejs.org/en/download
+
     - Установить MongoDB:
 
-        Перейдите по ссылке и установите приложение:
+        Перейдите по ссылке и установите приложение (
+            Если будут сложности с установкой - откройте https://www.mongodb.com/docs/manual/administration/install-community/
+        ):
             https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.7-signed.msi
 
+    - Запустить backend:
 
-Процесс запуска:
-
-    - Необходимо запустить файл faceBulba.exe
-
-    - Для запуска frontend сервера необходимо:
         - Открыть терминал (далее команды будут описываться для PowerShell)
-        - Перейти в директорию face-bulba/frontend
+        - Перейти в директорию проекта по умолчанию ( face-bulba )
         - Ввести команду:
-            serve -s build
-        - Ввести
+            ./faceBulba.exe
+
+    - Запустить frontend:
+
+         - Открыть терминал (далее команды будут описываться для PowerShell)
+        - Перейти в директорию проекта face-bulba/frontend
+        - Ввести команду:
+            npm start
+
+    Далее откроется страница в браузере. Это и есть сайт.
