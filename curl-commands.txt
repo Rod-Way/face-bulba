@@ -107,3 +107,39 @@ curl -X POST http://localhost:5000/api/album/delete \
 	-H "Content-Type: application/json" \
 	-H "Authorization: TOKEN" \
 	-d '"ALBUMID"'
+
+==================================================================
+
+	G E T
+
+==================================================================
+
+curl -X GET http://localhost:5000/api/get/users-batch/:batchNumber
+
+curl -X GET http://localhost:5000/api/get/user-by-id/:id
+
+curl -X GET http://localhost:5000/api/get/posts-batch/:batchNumber
+
+curl -X GET http://localhost:5000/api/get/post-by-id/:id
+
+curl -X GET http://localhost:5000/api/get/album-by-id/:id
+
+curl -X GET http://localhost:5000/api/get/get/:file
+
+==================================================================
+
+	F I L E S
+
+==================================================================
+
+curl -X POST http://localhost:5000/api/data/catch \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d 'FiLE'
+
+------------------------------------------------------------------
+
+curl -X POST http://localhost:5000/api/data/delete/:file \
+	-H "Content-Type: application/json" \
+	-H "Authorization: TOKEN" \
+	-d 'FiLE'
