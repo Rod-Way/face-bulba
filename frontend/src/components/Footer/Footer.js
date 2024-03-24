@@ -19,7 +19,7 @@ const Footer = () => {
 						</li>
 						<li className='social__item'>
 							<a
-								href='https://t.me/RodWay'
+								href=''
 								target='_blank'
 								rel='noopener noreferrer'
 							>
